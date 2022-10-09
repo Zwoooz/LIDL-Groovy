@@ -14,22 +14,22 @@ module.exports = {
 
     const row = new ActionRowBuilder()
       .setComponents(
-        first = new ButtonBuilder()
+        new ButtonBuilder()
           .setCustomId('first')
           .setLabel('⏮️')
           .setStyle(ButtonStyle.Secondary),
 
-        prev = new ButtonBuilder()
+        new ButtonBuilder()
           .setCustomId('prev')
           .setLabel('◀️')
           .setStyle(ButtonStyle.Secondary),
 
-        next = new ButtonBuilder()
+        new ButtonBuilder()
           .setCustomId('next')
           .setLabel('▶️')
           .setStyle(ButtonStyle.Secondary),
 
-        last = new ButtonBuilder()
+        new ButtonBuilder()
           .setCustomId('last')
           .setLabel('⏭️')
           .setStyle(ButtonStyle.Secondary),
@@ -39,18 +39,17 @@ module.exports = {
     const queueArr = queue.toString().split('\n');
     let queueString = [];
 
-    queueEmbed = new EmbedBuilder()
+    let queueEmbed = new EmbedBuilder()
       .setColor('Gold')
       .setTitle('Now playing:')
       .setDescription(`[**${track.toString()}**](${track.url})`)
       .setThumbnail(track.thumbnail)
       .setFields({ name: '\u200b', value: queue.toString().split('\n6')[0] });
 
-    let listNumber = 0;
-    module.exports.setFields = (multiplier = 0) => {
+    module.exports.setFields = (listNumber) => {
       queueString = [];
-      listNumber += multiplier;
-      console.log(listNumber);
+      // TODO: make "listNumber" remember which listnumber this is at.
+      if (listNumber === 'last') listNumber = Math.ceil((queueArr.length - 1) / 5 - 1);
       for (let i = 1; i <= 5 && i <= queueArr.length - 1; i++) {
         queueString.push(queueArr[i + 5 * listNumber]);
       }
@@ -62,10 +61,7 @@ module.exports = {
         .setFields({ name: '\u200b', value: `${queue.toString().split('\n')[0]}\n${queueString.join('\n')}` });
 
       interaction.editReply({ embeds: [queueEmbed], components: [row] });
-      return console.log(queueString.join('\n'));
     };
-    // console.log(setFields());
-
     return interaction.reply({ embeds: [queueEmbed], components: [row] });
   },
 };

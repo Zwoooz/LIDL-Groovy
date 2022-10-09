@@ -5,22 +5,30 @@ module.exports = {
   name: 'interactionCreate',
   async execute(interaction) {
     if (interaction.isButton()) {
+      if (!queue.setFields) return;
+      if (typeof listNumber === 'undefined') listNumber = 0;
+
       switch (interaction.customId) {
         case 'first':
+          listNumber = 0;
           queue.setFields(0);
           break;
         case 'prev':
-          queue.setFields(-1);
+          if (listNumber === 0) break;
+          listNumber -= 1;
+          queue.setFields(listNumber);
           break;
         case 'next':
-          queue.setFields(+1);
+          listNumber += 1;
+          queue.setFields(listNumber);
           break;
         case 'last':
-          queue.setFields();
+          // TODO: make "listNumber" remember which listnumber this is at.
+          queue.setFields('last');
           break;
       }
+      await interaction.deferReply().then(interaction.deleteReply());
       console.log(chalk.cyan(interaction.user.tag), `triggered a button in #${interaction.channel.name}`);
-      queue.setFields(1);
       return;
     }
     if (!interaction.isChatInputCommand()) return;

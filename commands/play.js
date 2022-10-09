@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('discord.js');
-const sleep = require('timers/promises');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -30,16 +29,11 @@ module.exports = {
     await interaction.deferReply();
     const searchResult = await player.search(query, {
       requestedBy: interaction.user,
-    });// .then((x) => x.tracks[0]);
-    if (!searchResult /* || !searchResult.tracks.length */) return void interaction.followUp({ content: 'No results were found!' });
-    // if (!searchResult ) return interaction.followUp({ content: `❌ | Track **${query}** not found!` });
-
-    // queue.play(searchResult);
+    });
+    if (!searchResult) return void interaction.followUp({ content: 'No results were found!' });
 
     await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
     searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);
     if (!queue.playing) await queue.play();
-
-    // return interaction.followUp({ content: `⏱️ | Loading track **${searchResult .title}**!` });
   },
 };

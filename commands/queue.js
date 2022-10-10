@@ -48,10 +48,11 @@ module.exports = {
 
     module.exports.setFields = (listNumber) => {
       queueString = [];
+      let multiplier = listNumber;
       // TODO: make "listNumber" remember which listnumber this is at.
-      if (listNumber === 'last') listNumber = Math.ceil((queueArr.length - 1) / 5 - 1);
+      if (multiplier === 'last') multiplier = Math.ceil((queueArr.length - 1) / 5 - 1);
       for (let i = 1; i <= 5 && i <= queueArr.length - 1; i++) {
-        queueString.push(queueArr[i + 5 * listNumber]);
+        queueString.push(queueArr[i + 5 * multiplier]);
       }
       queueEmbed = new EmbedBuilder()
         .setColor('Gold')

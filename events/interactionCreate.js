@@ -1,3 +1,4 @@
+/* eslint-disable no-undef, default-case */
 const chalk = require('chalk');
 const queue = require('../commands/queue');
 
@@ -24,7 +25,6 @@ module.exports = {
           break;
         case 'last':
           // TODO: make "listNumber" remember which listnumber this is at.
-          //TODO: this one is just a test.
           queue.setFields('last');
           break;
       }

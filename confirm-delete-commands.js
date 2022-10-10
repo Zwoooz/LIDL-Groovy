@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { Routes } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { clientId, token, guildId } = require('./config.json');

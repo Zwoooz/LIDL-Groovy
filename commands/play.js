@@ -30,14 +30,10 @@ module.exports = {
     const searchResult = await player.search(query, {
       requestedBy: interaction.user,
     });
-    if (!searchResult) return interaction.followUp({ content: 'No results were found!' });
+    if (!searchResult) return void interaction.followUp({ content: 'No results were found!' });
 
     await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
-    if (searchResult.playlist) {
-      queue.addTracks(searchResult.tracks);
-      queue.addTrack(searchResult.tracks[0]);
-    }
+    searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);
     if (!queue.playing) await queue.play();
-    return null;
   },
 };

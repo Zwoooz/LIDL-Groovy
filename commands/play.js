@@ -33,6 +33,8 @@ module.exports = {
     if (!searchResult) return interaction.followUp({ content: 'No results were found!' });
 
     await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
+    player.on('trackAdd', (track) => interaction.followUp({ content: `🎶 | Track **${track.title}** has been added to the queue!` }));
+    player.on('playlistAdd', (playlist) => interaction.followUp({ content: `🎶 | Playlist **${playlist.title}** with ${playlist.items.length} songs has been added to the queue!` }));
     // eslint-disable-next-line max-len, no-unused-expressions
     searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);
     if (!queue.playing) await queue.play();

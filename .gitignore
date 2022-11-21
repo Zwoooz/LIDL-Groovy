@@ -131,3 +131,8 @@ dist
 config.json
 .eslintrc.js
 commands/test.js
+
+# lidlgroovy.com tests
+app.js
+index.html
+main.css

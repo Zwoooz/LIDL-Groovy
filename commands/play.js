@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { setTimeout } = require('timers/promises');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -30,11 +31,14 @@ module.exports = {
     const searchResult = await player.search(query, {
       requestedBy: interaction.user,
     });
-    if (!searchResult) return interaction.followUp({ content: 'No results were found!' });
+    let loadingMsg;
+    if (!searchResult) return interaction.followUp({ content: 'No results were found!' }); // eslint-disable-next-line prefer-const
+    loadingMsg = await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
+    // TODO: delete "loadingMsg" if it has added the track it's "loading...".
+    // TODO: Temporarily it is just deleting itself after 100ms which is just stupid.
+    setTimeout(100).then(() => loadingMsg.delete()); // TODO: This is what should fixed changed.
+    // TODO: Please...
 
-    await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
-    player.on('trackAdd', (track) => interaction.followUp({ content: `🎶 | Track **${track.title}** has been added to the queue!` }));
-    player.on('playlistAdd', (playlist) => interaction.followUp({ content: `🎶 | Playlist **${playlist.title}** with ${playlist.items.length} songs has been added to the queue!` }));
     // eslint-disable-next-line max-len, no-unused-expressions
     searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);
     if (!queue.playing) await queue.play();

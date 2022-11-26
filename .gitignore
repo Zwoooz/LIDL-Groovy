@@ -136,3 +136,6 @@ commands/test.js
 app.js
 index.html
 main.css
+
+# macOS garbage
+.DS_Store

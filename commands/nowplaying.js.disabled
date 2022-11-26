@@ -1,4 +1,6 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+/* eslint-disable */
+/* const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const nowPlayingEmbed = require('../index');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -7,14 +9,7 @@ module.exports = {
   async execute(interaction) {
     const { player } = require('../index');
     if (!player.getQueue(interaction.guild) || !player.getQueue(interaction.guild).nowPlaying()) return interaction.reply('No song currently playing!');
-    const track = player.getQueue(interaction.guild).nowPlaying();
-
-    const nowPlayingEmbed = new EmbedBuilder()
-      .setColor('Gold')
-      .setTitle('Now playing:')
-      .setDescription(`[**${track.toString()}**](${track.url})`)
-      .setThumbnail(track.thumbnail);
 
     return interaction.reply({ embeds: [nowPlayingEmbed] });
   },
-};
+}; */

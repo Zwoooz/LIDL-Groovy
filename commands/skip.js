@@ -12,7 +12,7 @@ module.exports = {
 
     interaction.reply('Skipping...');
     player.getQueue(interaction.guild).skip();
-    await wait(5000);
+    await wait(3000);
     return interaction.deleteReply();
   },
 };

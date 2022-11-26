@@ -1,9 +1,13 @@
 /* eslint-disable */
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, EmbedBuilder} = require('discord.js');
 const { Player } = require('discord-player');
 const { token, youTubeCookie } = require('./config.json');
+const { setTimeout } = require('timers/promises');
+
+
+
 
 const client = new Client({
   intents: [
@@ -50,7 +54,24 @@ for (const file of eventFiles) {
   }
 }
 
-player.on('trackStart', (queue, track) => queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`));
+
+let playMsg;
+player.on('trackStart', async (queue, track) => {
+  const nowPlayingEmbed = new EmbedBuilder()
+      .setColor('Gold')
+      .setTitle('Now playing:')
+      .setDescription(`[**${track.toString()}**](${track.url})`)
+      .setThumbnail(track.thumbnail);
+  if(playMsg) {
+    playMsg.delete();
+    playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
+  } else {
+    playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
+  }
+})
+player.on('trackAdd', (queue, track) => queue.metadata.channel.send({ content: `🎶 | Track **${track.title}** has been added to the queue!` }).then((msg) => setTimeout(3000).then(() => msg.delete())));
+player.on('playlistAdd', (queue, playlist) => queue.metadata.channel.send({ content: `🎶 | Playlist **${playlist.title}** with ${playlist.items.length} songs has been added to the queue!` }).then((msg) => setTimeout(3000).then(() => msg.delete())));
+
 
 client.login(token);
 

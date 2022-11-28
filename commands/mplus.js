@@ -17,8 +17,8 @@ module.exports = {
   async execute(interaction) {
     const charName = interaction.options.getString('character').toLowerCase();
     let serverName = interaction.options.getString('realm').toLowerCase();
-    if (serverName.includes(' ')) {
-      serverName = serverName.replace(' ', '-');
+    if (serverName.includes(' ') || serverName.includes('-')) {
+      serverName = serverName.replace(/-| /g, '');
     }
     const region = interaction.options.getString('region').toLowerCase();
 

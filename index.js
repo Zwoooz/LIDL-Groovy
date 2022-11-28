@@ -1,7 +1,7 @@
 /* eslint-disable */
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits, EmbedBuilder} = require('discord.js');
+const { Client, Collection, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { Player } = require('discord-player');
 const { token, youTubeCookie } = require('./config.json');
 const { setTimeout } = require('timers/promises');

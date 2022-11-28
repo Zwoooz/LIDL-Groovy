@@ -41,7 +41,7 @@ module.exports = {
       console.error(error);
       try {
         await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-      } catch (error) {
+      } catch {
         console.error(error);
         await interaction.channel.send({ content: 'There was an error while executing this command!', ephemeral: true });
       }

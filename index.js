@@ -14,6 +14,12 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildVoiceStates,
   ],
+  presence: {
+    activities: [{
+      type: 2,
+      name: '/play'
+    }],
+  },
 });
 
 const player = new Player(client, {
@@ -53,6 +59,7 @@ for (const file of eventFiles) {
     client.on(event.name, (...args) => event.execute(...args));
   }
 }
+
 
 
 let playMsg;

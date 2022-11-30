@@ -5,6 +5,5 @@ module.exports = {
   once: true,
   execute(client) {
     console.log(chalk.green('Ready!\nLogged in as', chalk.cyan(client.user.tag)));
-    client.user.setActivity('dumb');
   },
 };

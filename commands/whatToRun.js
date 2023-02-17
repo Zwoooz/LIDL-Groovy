@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len, no-restricted-syntax */
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
@@ -33,6 +33,27 @@ module.exports = {
 
     const lowestScore = [];
 
+    function removeDuplicateDungeons(objects, strings) {
+      const usedDungeons = new Set();
+      const remainingDungeons = [];
+
+      for (const obj of objects) {
+        if (!usedDungeons.has(obj.dungeon)) {
+          usedDungeons.add(obj.dungeon);
+        }
+      }
+
+      for (const dungeon of strings) {
+        if (!usedDungeons.has(dungeon)) {
+          remainingDungeons.push(dungeon);
+        }
+      }
+
+      return remainingDungeons;
+    }
+
+    const currentDungeons = ['Shadowmoon Burial Grounds', 'Temple of the Jade Serpent', 'Court of Stars', 'Algeth\'ar Academy', 'The Azure Vault', 'Halls of Valor', 'Ruby Life Pools', 'The Nokhud Offensive'];
+
     const mPlus = async (name) => {
       const resAlt = await fetch(
         `https://raider.io/api/v1/characters/profile?region=${region}&realm=${serverName}&name=${name}&fields=mythic_plus_alternate_runs:all`,
@@ -51,26 +72,42 @@ module.exports = {
         affix = temp.title.split(', ');
       }
 
-      for (let j = userAlt.mythic_plus_alternate_runs.length - 1; j >= 0; j -= 1) {
-        if (userAlt.mythic_plus_alternate_runs[j].affixes[0].name === affix[0]) {
-          lowestScore.push({
-            score: userAlt.mythic_plus_alternate_runs[j].score,
-            dungeon: userAlt.mythic_plus_alternate_runs[j].dungeon,
-            level: `+${userAlt.mythic_plus_alternate_runs[j].mythic_level}`,
-            name: name.charAt(0).toUpperCase() + name.slice(1),
-          });
-          break;
+      let nonRanDungeons = [];
+
+      if (userAlt.mythic_plus_alternate_runs.length < 8) {
+        nonRanDungeons = removeDuplicateDungeons(userAlt.mythic_plus_alternate_runs, currentDungeons);
+        for (let l = userBest.mythic_plus_best_runs.length - 1; l >= 0; l -= 1) {
+          if (userBest.mythic_plus_best_runs[l].dungeon === nonRanDungeons[0] && userBest.mythic_plus_best_runs[l].affixes[0] !== affix[0]) {
+            lowestScore.push({
+              score: 0,
+              dungeon: nonRanDungeons[0],
+              level: '+0',
+              name: name.charAt(0).toUpperCase() + name.slice(1),
+            });
+          }
         }
-        if (j === 0) {
-          for (let k = userBest.mythic_plus_best_runs.length - 1; k >= 0; k -= 1) {
-            if (userBest.mythic_plus_best_runs[k].affixes[0].name === affix[0]) {
-              lowestScore.push({
-                score: userBest.mythic_plus_best_runs[k].score,
-                dungeon: userBest.mythic_plus_best_runs[k].dungeon,
-                level: `+${userBest.mythic_plus_best_runs[k].mythic_level}`,
-                name: name.charAt(0).toUpperCase() + name.slice(1),
-              });
-              break;
+      } else {
+        for (let j = userAlt.mythic_plus_alternate_runs.length - 1; j >= 0; j -= 1) {
+          if (userAlt.mythic_plus_alternate_runs[j].affixes[0].name === affix[0]) {
+            lowestScore.push({
+              score: userAlt.mythic_plus_alternate_runs[j].score,
+              dungeon: userAlt.mythic_plus_alternate_runs[j].dungeon,
+              level: `+${userAlt.mythic_plus_alternate_runs[j].mythic_level}`,
+              name: name.charAt(0).toUpperCase() + name.slice(1),
+            });
+            break;
+          }
+          if (j === 0) {
+            for (let k = userBest.mythic_plus_best_runs.length - 1; k >= 0; k -= 1) {
+              if (userBest.mythic_plus_best_runs[k].affixes[0].name === affix[0]) {
+                lowestScore.push({
+                  score: userBest.mythic_plus_best_runs[k].score,
+                  dungeon: userBest.mythic_plus_best_runs[k].dungeon,
+                  level: `+${userBest.mythic_plus_best_runs[k].mythic_level}`,
+                  name: name.charAt(0).toUpperCase() + name.slice(1),
+                });
+                break;
+              }
             }
           }
         }
@@ -129,6 +166,7 @@ module.exports = {
           value: `${score.dungeon} ${score.level}`,
         });
       });
+      embed.setFooter({ text: 'Updated for dungeons S1 Dragonflight' });
 
       return interaction.reply({ embeds: [embed] });
     });

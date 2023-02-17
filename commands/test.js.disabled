@@ -1,0 +1,93 @@
+/* eslint-disable max-len */
+const lowestScore = [];
+const charNames = ['swuzie', 'norvia', 'jírak', 'blackfox', 'thalicia'];
+const serverName = 'argent-dawn';
+const region = 'eu';
+const affix = 'Fortified';
+
+const mPlus = async (name) => {
+  const resAlt = await fetch(
+    `https://raider.io/api/v1/characters/profile?region=${region}&realm=${serverName}&name=${name}&fields=mythic_plus_alternate_runs:all`,
+  );
+  const userAlt = await resAlt.json();
+
+  const resBest = await fetch(
+    `https://raider.io/api/v1/characters/profile?region=${region}&realm=${serverName}&name=${name}&fields=mythic_plus_best_runs:all`,
+  );
+
+  const userBest = await resBest.json();
+
+  for (let j = userAlt.mythic_plus_alternate_runs.length - 1; j >= 0; j -= 1) {
+    if (userAlt.mythic_plus_alternate_runs[j].affixes[0].name === affix) {
+      lowestScore.push({
+        score: userAlt.mythic_plus_alternate_runs[j].score,
+        dungeon: userAlt.mythic_plus_alternate_runs[j].dungeon,
+        level: userAlt.mythic_plus_alternate_runs[j].mythic_level,
+        name,
+      });
+      break;
+    }
+    if (j === 0) {
+      for (let k = userBest.mythic_plus_best_runs.length - 1; k >= 0; k -= 1) {
+        if (userBest.mythic_plus_best_runs[k].affixes[0].name === affix) {
+          lowestScore.push({
+            score: userBest.mythic_plus_best_runs[k].score,
+            dungeon: userBest.mythic_plus_best_runs[k].dungeon,
+            level: userBest.mythic_plus_best_runs[k].mythic_level,
+            name,
+            best: true,
+          });
+          break;
+        }
+      }
+    }
+  }
+};
+
+function findDuplicateDungeon(arrayOfObjects) {
+  const dungeonMap = new Map();
+  let maxCount = 0;
+  let duplicateDungeon = null;
+
+  for (let i = 0; i < arrayOfObjects.length; i += 1) {
+    const { dungeon } = arrayOfObjects[i];
+    const count = (dungeonMap.has(dungeon)) ? dungeonMap.get(dungeon) + 1 : 1;
+    dungeonMap.set(dungeon, count);
+
+    if (count > maxCount) {
+      maxCount = count;
+      duplicateDungeon = dungeon;
+    }
+  }
+
+  return (maxCount > 1) ? { dungeon: duplicateDungeon, count: maxCount } : null;
+}
+
+const getLowestScores = async () => {
+  const promises = charNames.map((name) => mPlus(name));
+  await Promise.all(promises);
+  return lowestScore.sort((a, b) => a.score - b.score);
+};
+
+getLowestScores().then((lowestScores) => {
+  console.log(lowestScores);
+});
+
+getLowestScores().then((lowestScores) => {
+  const embed = new EmbedBuilder()
+    .setTitle(`Lowest Mythic+ Scores for ${serverName}-${region} (${affix} Affix)`)
+    .setColor('#0099ff');
+
+  lowestScores.forEach((score) => {
+    const {
+      name, dungeon, level, score: mplusScore,
+    } = score;
+    const bestRun = score.best ? '(Best Run)' : '';
+    embed.addField(
+      `${name}'s ${dungeon} +${level} ${bestRun}`,
+      `Score: ${mplusScore}`,
+    );
+  });
+
+  return interaction.reply({ embeds: [mPlusEmbed] });
+});

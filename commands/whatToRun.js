@@ -167,7 +167,6 @@ module.exports = {
         });
       });
       embed.setFooter({ text: 'Updated for dungeons S1 Dragonflight' });
-      embed.addFields({ name: 'test', value: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_lavasurge.jpg' });
 
       return interaction.reply({ embeds: [embed] });
     });

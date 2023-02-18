@@ -54,7 +54,7 @@ module.exports = {
 
     const currentDungeons = ['Shadowmoon Burial Grounds', 'Temple of the Jade Serpent', 'Court of Stars', 'Algeth\'ar Academy', 'The Azure Vault', 'Halls of Valor', 'Ruby Life Pools', 'The Nokhud Offensive'];
 
-    const mPlus = async (name) => {
+    const whatToRun = async (name) => {
       const resAlt = await fetch(
         `https://raider.io/api/v1/characters/profile?region=${region}&realm=${serverName}&name=${name}&fields=mythic_plus_alternate_runs:all`,
       );
@@ -134,7 +134,7 @@ module.exports = {
     }
 
     const getLowestScores = async () => {
-      const promises = charNames.map((name) => mPlus(name));
+      const promises = charNames.map((name) => whatToRun(name));
       await Promise.all(promises);
       return lowestScore.sort((a, b) => a.score - b.score);
     };
@@ -167,6 +167,7 @@ module.exports = {
         });
       });
       embed.setFooter({ text: 'Updated for dungeons S1 Dragonflight' });
+      embed.addFields({ name: 'test', value: 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_lavasurge.jpg' });
 
       return interaction.reply({ embeds: [embed] });
     });

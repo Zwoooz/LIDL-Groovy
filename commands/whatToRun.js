@@ -84,20 +84,24 @@ module.exports = {
       }
 
       let nonRanDungeons = [];
+      let cont = true;
 
       if (userAlt.mythic_plus_alternate_runs.length < 8) {
         nonRanDungeons = removeDuplicateDungeons(userAlt.mythic_plus_alternate_runs, currentDungeons);
+
         for (let l = userBest.mythic_plus_best_runs.length - 1; l >= 0; l -= 1) {
-          if (userBest.mythic_plus_best_runs[l].dungeon === nonRanDungeons[0] && userBest.mythic_plus_best_runs[l].affixes[0] !== affix[0]) {
+          if (userBest.mythic_plus_best_runs[l].dungeon === nonRanDungeons[0] && userBest.mythic_plus_best_runs[l].affixes[0].name !== affix[0]) {
             lowestScore.push({
               score: 0,
               dungeon: nonRanDungeons[0],
               level: '+0',
               name: name.charAt(0).toUpperCase() + name.slice(1),
             });
+            cont = false;
           }
         }
-      } else {
+      }
+      if (cont === true) {
         for (let j = userAlt.mythic_plus_alternate_runs.length - 1; j >= 0; j -= 1) {
           if (userAlt.mythic_plus_alternate_runs[j].affixes[0].name === affix[0]) {
             lowestScore.push({

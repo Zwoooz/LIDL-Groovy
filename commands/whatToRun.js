@@ -72,6 +72,17 @@ module.exports = {
         affix = temp.title.split(', ');
       }
 
+      if (userAlt.message) {
+        if (userAlt.message.includes('realm')) {
+          lowestScore[0] = (`${serverName} is not a valid realm`);
+          return;
+        }
+        if (userAlt.message.includes('character')) {
+          lowestScore.push(`${name} is not a valid character`);
+          return;
+        }
+      }
+
       let nonRanDungeons = [];
 
       if (userAlt.mythic_plus_alternate_runs.length < 8) {
@@ -140,6 +151,9 @@ module.exports = {
     };
 
     getLowestScores().then((lowestScores) => {
+      if (!(typeof lowestScore[0] === 'object' && lowestScore !== null)) {
+        return interaction.reply({ content: lowestScore.join('\n'), ephemeral: true });
+      }
       const embed = new EmbedBuilder()
         .setTitle(`Best dungeons to run for score with **${affix[0]}** affix:`)
         .setColor('#9B59B6');

@@ -22,6 +22,7 @@ module.exports = {
       .addChoices({ name: 'Fortified', value: 'Fortified' }, { name: 'Tyrannical', value: 'Tyrannical' })),
 
   async execute(interaction) {
+    await interaction.deferReply();
     const charNames = interaction.options.getString('characters').toLowerCase().split(' ');
     let serverName = interaction.options.getString('realm').toLowerCase();
     if (serverName.includes(' ') || serverName.includes('-')) {
@@ -156,7 +157,7 @@ module.exports = {
 
     getLowestScores().then((lowestScores) => {
       if (!(typeof lowestScore[0] === 'object' && lowestScore !== null)) {
-        return interaction.reply({ content: lowestScore.join('\n'), ephemeral: true });
+        return interaction.editReply({ content: lowestScore.join('\n'), ephemeral: true });
       }
       const embed = new EmbedBuilder()
         .setTitle(`Best dungeons to run for score with **${affix[0]}** affix:`)
@@ -186,7 +187,7 @@ module.exports = {
       });
       embed.setFooter({ text: 'Updated for dungeons S1 Dragonflight' });
 
-      return interaction.reply({ embeds: [embed] });
+      return interaction.editReply({ embeds: [embed] });
     });
   },
 };

@@ -77,19 +77,3 @@ player.on('playlistAdd', (queue, playlist) => queue.metadata.channel.send({ cont
 player.on('queueEnd', () => playMsg? playMsg.delete() : null);
 
 client.login(token);
-
-// supresses ExperimentalWarning
-const originalEmit = process.emit;
-process.emit = function (name, data, ...args) {
-  if (
-    name === 'warning'
-    && typeof data === 'object'
-    && data.name === 'ExperimentalWarning'
-    // if you want to only stop certain messages, test for the message here:
-    // && data.message.includes(`Fetch API`)
-  ) {
-    return false;
-  }
-  return originalEmit.apply(process, arguments);
-};
-// supresses ExperimentalWarning

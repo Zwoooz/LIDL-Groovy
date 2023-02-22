@@ -5,10 +5,6 @@ const { Client, Collection, GatewayIntentBits, EmbedBuilder } = require('discord
 const { Player } = require('discord-player');
 const { token, youTubeCookie } = require('./config.json');
 const { setTimeout } = require('timers/promises');
-
-
-
-
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,

@@ -11,6 +11,7 @@ module.exports = {
       .addChoices({ name: 'US', value: 'us' }, { name: 'EU', value: 'eu' })),
 
   async execute(interaction) {
+    await interaction.deferReply();
     const region = interaction.options.getString('region').toLowerCase();
 
     const affix = async () => {
@@ -24,7 +25,7 @@ module.exports = {
         .setTitle('Current affixes are:')
         .setDescription(affixes.title);
 
-      return interaction.reply({ embeds: [embed] });
+      return interaction.editReply({ embeds: [embed] });
     };
     affix(region);
   },

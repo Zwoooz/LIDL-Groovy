@@ -7,8 +7,9 @@ module.exports = {
     .setName('queue')
     .setDescription('Displays song queue'),
   async execute(interaction) {
+    await interaction.deferReply();
     const { player } = require('../index');
-    if (!player.getQueue(interaction.guild) || !player.getQueue(interaction.guild).nowPlaying()) return interaction.reply('No song currently playing!');
+    if (!player.getQueue(interaction.guild) || !player.getQueue(interaction.guild).nowPlaying()) return interaction.editReply('No song currently playing!');
     const queue = player.getQueue(interaction.guild);
     const track = player.getQueue(interaction.guild).nowPlaying();
 
@@ -63,6 +64,6 @@ module.exports = {
 
       interaction.editReply({ embeds: [queueEmbed], components: [row] });
     };
-    return interaction.reply({ embeds: [queueEmbed], components: [row] });
+    return interaction.editReply({ embeds: [queueEmbed], components: [row] });
   },
 };

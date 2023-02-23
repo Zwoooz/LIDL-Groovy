@@ -15,6 +15,7 @@ module.exports = {
     .addStringOption((option) => option.setName('character').setDescription('Name of character').setRequired(true)),
 
   async execute(interaction) {
+    await interaction.deferReply();
     const charName = interaction.options.getString('character').toLowerCase();
     let serverName = interaction.options.getString('realm').toLowerCase();
     if (serverName.includes(' ') || serverName.includes('-')) {
@@ -29,8 +30,8 @@ module.exports = {
       const user = await res.json();
 
       if (user.message) {
-        if (user.message.includes('realm')) return interaction.reply(`${nameServer} is not a valid realm`);
-        if (user.message.includes('character')) return interaction.reply(`${name} is not a valid character`);
+        if (user.message.includes('realm')) return interaction.editReply(`${nameServer} is not a valid realm`);
+        if (user.message.includes('character')) return interaction.editReply(`${name} is not a valid character`);
       }
 
       const mPlusEmbed = new EmbedBuilder()
@@ -44,7 +45,7 @@ module.exports = {
           inline: true,
         });
 
-      return interaction.reply({ embeds: [mPlusEmbed] });
+      return interaction.editReply({ embeds: [mPlusEmbed] });
     };
     mPlus(charName, serverName, region);
   },

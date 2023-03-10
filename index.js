@@ -76,4 +76,19 @@ player.on('trackAdd', (queue, track) => queue.metadata.channel.send({ content: `
 player.on('playlistAdd', (queue, playlist) => queue.metadata.channel.send({ content: `🎶 | Playlist **${playlist.title}** with ${playlist.items.length} songs has been added to the queue!` }).then((msg) => setTimeout(3000).then(() => msg.delete())));
 player.on('queueEnd', () => playMsg? playMsg.delete() : null);
 
+player.on('connectionCreate', (queue) => {
+  queue.connection.voiceConnection.on('stateChange', (oldState, newState) => {
+    const oldNetworking = Reflect.get(oldState, 'networking');
+    const newNetworking = Reflect.get(newState, 'networking');
+
+    const networkStateChangeHandler = (oldNetworkState, newNetworkState) => {
+      const newUdp = Reflect.get(newNetworkState, 'udp');
+      clearInterval(newUdp?.keepAliveInterval);
+    }
+
+    oldNetworking?.off('stateChange', networkStateChangeHandler);
+    newNetworking?.on('stateChange', networkStateChangeHandler);
+  });
+});
+
 client.login(token);

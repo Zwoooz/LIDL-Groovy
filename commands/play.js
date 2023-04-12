@@ -36,7 +36,11 @@ module.exports = {
     loadingMsg = await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
     // TODO: delete "loadingMsg" if it has added the track it's "loading...".
     // TODO: Temporarily it is just deleting itself after 100ms which is just stupid.
-    setTimeout(100).then(() => loadingMsg.delete()); // TODO: This is what should fixed changed.
+    try {
+      setTimeout(100).then(() => loadingMsg.delete()); // TODO: This is what should fixed changed.
+    } catch (error) {
+      console.log(error);
+    }
     // TODO: Please...
 
     // eslint-disable-next-line max-len, no-unused-expressions

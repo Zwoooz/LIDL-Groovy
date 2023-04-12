@@ -66,7 +66,11 @@ player.on('trackStart', async (queue, track) => {
       .setDescription(`[**${track.toString()}**](${track.url})`)
       .setThumbnail(track.thumbnail);
   if(playMsg) {
-    playMsg.delete();
+    try{
+      playMsg.delete();
+    } catch (error){
+      console.error(error)
+    }
     playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
   } else {
     playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })

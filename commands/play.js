@@ -35,7 +35,7 @@ module.exports = {
     loadingMsg = await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
     player.on('trackAdd', () => {
       if(loadingMsg) {
-        loadingMsg.delete();
+        loadingMsg.edit('edited!');
         loadingMsg = false;
       }
     });

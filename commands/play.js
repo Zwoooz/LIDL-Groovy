@@ -42,16 +42,16 @@ module.exports = {
         }));
       }
     });
-    player.on('tracksAdd', (tracks) => {
+    /*  player.on('tracksAdd', (tracks) => {
       console.log('inside playlistAdd');
       console.log(tracks);
       if(loadingMsg) {
-        loadingMsg.edit(`🎶 | Playlist **${tracks.title}** with ${tracks.items.length} songs has been added to the queue!`).then((msg) => setTimeout(3000).then(() => {
+        loadingMsg.edit(`🎶 | Playlist **${tracks.title}** with ${tracks.tracks.length} songs has been added to the queue!`).then((msg) => setTimeout(3000).then(() => {
           msg.delete();
           loadingMsg = false;
         }));
       }
-    });
+    }); */
 
     // eslint-disable-next-line max-len, no-unused-expressions
     searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);

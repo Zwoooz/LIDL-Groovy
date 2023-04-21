@@ -34,7 +34,7 @@ module.exports = {
     let loadingMsg;
     if(!searchResult) return interaction.followUp({ content: 'No results were found!' }); // eslint-disable-next-line prefer-const
     loadingMsg = await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
-    player.on('trackAdd', (track) => {
+    player.on('trackAdd', () => {
       if(loadingMsg) {
         loadingMsg.edit(`🎶 | Track **${searchResult.tracks[0].title}** has been added to the queue!`).then((msg) => setTimeout(5000).then(() => {
           msg.delete();

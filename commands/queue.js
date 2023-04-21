@@ -45,9 +45,14 @@ module.exports = {
       .setTitle('Now playing:')
       .setDescription(`[**${track.toString()}**](${track.url})`)
       .setThumbnail(track.thumbnail)
-      .setFields({ name: '\u200b', value: queue.toString().split('\n6')[0] });
+      .setFields(
+        { name: '\u200b', value: queue.toString().split('\n11')[0] }
+        { name: '\u200b', value: `And ${queue.toString().length-11} other items` }
+        );
 
-    module.exports.setFields = (listNumber) => {
+
+      //TODO: Crashes the bot when buttons are used
+    /* module.exports.setFields = (listNumber) => {
       queueString = [];
       let multiplier = listNumber;
       // TODO: make "listNumber" remember which listnumber this is at.
@@ -65,5 +70,5 @@ module.exports = {
       interaction.editReply({ embeds: [queueEmbed], components: [row] });
     };
     return interaction.editReply({ embeds: [queueEmbed], components: [row] });
-  },
+  }, */
 };

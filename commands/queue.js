@@ -1,4 +1,4 @@
-const {
+const{
   SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle,
 } = require('discord.js');
 
@@ -8,8 +8,8 @@ module.exports = {
     .setDescription('Displays song queue'),
   async execute(interaction) {
     await interaction.deferReply();
-    const { player } = require('../index');
-    if (!player.getQueue(interaction.guild) || !player.getQueue(interaction.guild).nowPlaying()) return interaction.editReply('No song currently playing!');
+    const{ player } = require('../index');
+    if(!player.getQueue(interaction.guild) || !player.getQueue(interaction.guild).nowPlaying()) return interaction.editReply('No song currently playing!');
     const queue = player.getQueue(interaction.guild);
     const track = player.getQueue(interaction.guild).nowPlaying();
 
@@ -51,8 +51,8 @@ module.exports = {
       queueString = [];
       let multiplier = listNumber;
       // TODO: make "listNumber" remember which listnumber this is at.
-      if (multiplier === 'last') multiplier = Math.ceil((queueArr.length - 1) / 5 - 1);
-      for (let i = 1; i <= 5 && i <= queueArr.length - 1; i += 1) {
+      if(multiplier === 'last') multiplier = Math.ceil((queueArr.length - 1) / 5 - 1);
+      for(let i = 1; i <= 5 && i <= queueArr.length - 1; i += 1) {
         queueString.push(queueArr[i + 5 * multiplier]);
       }
       queueEmbed = new EmbedBuilder()

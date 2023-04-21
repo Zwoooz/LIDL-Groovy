@@ -1,5 +1,5 @@
 /* eslint-disable max-len, no-restricted-syntax */
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const{ SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -25,7 +25,7 @@ module.exports = {
     await interaction.deferReply();
     const charNames = interaction.options.getString('characters').toLowerCase().split(' ');
     let serverName = interaction.options.getString('realm').toLowerCase();
-    if (serverName.includes(' ') || serverName.includes('-')) {
+    if(serverName.includes(' ') || serverName.includes('-')) {
       serverName = serverName.replace(/-| /g, '');
     }
     const region = interaction.options.getString('region').toLowerCase();
@@ -38,14 +38,14 @@ module.exports = {
       const usedDungeons = new Set();
       const remainingDungeons = [];
 
-      for (const obj of objects) {
-        if (!usedDungeons.has(obj.dungeon)) {
+      for(const obj of objects) {
+        if(!usedDungeons.has(obj.dungeon)) {
           usedDungeons.add(obj.dungeon);
         }
       }
 
-      for (const dungeon of strings) {
-        if (!usedDungeons.has(dungeon)) {
+      for(const dungeon of strings) {
+        if(!usedDungeons.has(dungeon)) {
           remainingDungeons.push(dungeon);
         }
       }
@@ -65,7 +65,7 @@ module.exports = {
         `https://raider.io/api/v1/characters/profile?region=${region}&realm=${serverName}&name=${name}&fields=mythic_plus_best_runs:all`,
       );
       const userBest = await resBest.json();
-      if (!affix[0]) {
+      if(!affix[0]) {
         const resAff = await fetch(
           `https://raider.io/api/v1/mythic-plus/affixes?region=${region}&locale=en`,
         );
@@ -73,12 +73,12 @@ module.exports = {
         affix = temp.title.split(', ');
       }
 
-      if (userAlt.message) {
-        if (userAlt.message.includes('realm')) {
+      if(userAlt.message) {
+        if(userAlt.message.includes('realm')) {
           lowestScore[0] = (`${serverName} is not a valid realm`);
           return;
         }
-        if (userAlt.message.includes('character')) {
+        if(userAlt.message.includes('character')) {
           lowestScore.push(`${name} is not a valid character`);
           return;
         }
@@ -87,11 +87,11 @@ module.exports = {
       let nonRanDungeons = [];
       let cont = true;
 
-      if (userAlt.mythic_plus_alternate_runs.length < 8) {
+      if(userAlt.mythic_plus_alternate_runs.length < 8) {
         nonRanDungeons = removeDuplicateDungeons(userAlt.mythic_plus_alternate_runs, currentDungeons);
 
-        for (let l = userBest.mythic_plus_best_runs.length - 1; l >= 0; l -= 1) {
-          if (userBest.mythic_plus_best_runs[l].dungeon === nonRanDungeons[0] && userBest.mythic_plus_best_runs[l].affixes[0].name !== affix[0]) {
+        for(let l = userBest.mythic_plus_best_runs.length - 1; l >= 0; l -= 1) {
+          if(userBest.mythic_plus_best_runs[l].dungeon === nonRanDungeons[0] && userBest.mythic_plus_best_runs[l].affixes[0].name !== affix[0]) {
             lowestScore.push({
               score: 0,
               dungeon: nonRanDungeons[0],
@@ -102,9 +102,9 @@ module.exports = {
           }
         }
       }
-      if (cont === true) {
-        for (let j = userAlt.mythic_plus_alternate_runs.length - 1; j >= 0; j -= 1) {
-          if (userAlt.mythic_plus_alternate_runs[j].affixes[0].name === affix[0]) {
+      if(cont === true) {
+        for(let j = userAlt.mythic_plus_alternate_runs.length - 1; j >= 0; j -= 1) {
+          if(userAlt.mythic_plus_alternate_runs[j].affixes[0].name === affix[0]) {
             lowestScore.push({
               score: userAlt.mythic_plus_alternate_runs[j].score,
               dungeon: userAlt.mythic_plus_alternate_runs[j].dungeon,
@@ -113,9 +113,9 @@ module.exports = {
             });
             break;
           }
-          if (j === 0) {
-            for (let k = userBest.mythic_plus_best_runs.length - 1; k >= 0; k -= 1) {
-              if (userBest.mythic_plus_best_runs[k].affixes[0].name === affix[0]) {
+          if(j === 0) {
+            for(let k = userBest.mythic_plus_best_runs.length - 1; k >= 0; k -= 1) {
+              if(userBest.mythic_plus_best_runs[k].affixes[0].name === affix[0]) {
                 lowestScore.push({
                   score: userBest.mythic_plus_best_runs[k].score,
                   dungeon: userBest.mythic_plus_best_runs[k].dungeon,
@@ -135,18 +135,18 @@ module.exports = {
       let maxCount = 0;
       let duplicateDungeon = null;
 
-      for (let i = 0; i < arrayOfObjects.length; i += 1) {
-        const { dungeon } = arrayOfObjects[i];
+      for(let i = 0; i < arrayOfObjects.length; i += 1) {
+        const{ dungeon } = arrayOfObjects[i];
         const count = (dungeonMap.has(dungeon)) ? dungeonMap.get(dungeon) + 1 : 1;
         dungeonMap.set(dungeon, count);
 
-        if (count > maxCount) {
+        if(count > maxCount) {
           maxCount = count;
           duplicateDungeon = dungeon;
         }
       }
 
-      return (maxCount > 1) ? { dungeon: duplicateDungeon, count: maxCount } : null;
+      return(maxCount > 1) ? { dungeon: duplicateDungeon, count: maxCount } : null;
     }
 
     const getLowestScores = async () => {
@@ -156,22 +156,22 @@ module.exports = {
     };
 
     getLowestScores().then((lowestScores) => {
-      if (!(typeof lowestScore[0] === 'object' && lowestScore !== null)) {
+      if(!(typeof lowestScore[0] === 'object' && lowestScore !== null)) {
         return interaction.editReply({ content: lowestScore.join('\n'), ephemeral: true });
       }
       const embed = new EmbedBuilder()
         .setTitle(`Best dungeons to run for score with **${affix[0]}** affix:`)
         .setColor('#9B59B6');
-      if (affix[0] === 'Tyrannical') {
+      if(affix[0] === 'Tyrannical') {
         embed.setThumbnail('https://wow.zamimg.com/images/wow/icons/large/achievement_boss_archaedas.jpg');
       } else embed.setThumbnail('https://wow.zamimg.com/images/wow/icons/large/ability_toughness.jpg');
 
-      if (findDuplicateDungeon(lowestScores)) {
+      if(findDuplicateDungeon(lowestScores)) {
         embed.addFields({
           name: `Most valuble dungeon is currently: \n${findDuplicateDungeon(lowestScores).dungeon}`,
           value: `**${findDuplicateDungeon(lowestScores).count}** people has this as their lowest scoring dungeon`,
         });
-      } else {
+      } else{
         embed.addFields({
           name: `Most valuble dungeon is currently: \n**${lowestScores[0].dungeon}**`,
           value: `Lowest scoring dungeon is: \n**${lowestScores[0].name}** with **${lowestScores[0].dungeon} ${lowestScores[0].level}**`,

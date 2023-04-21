@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const{ SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -18,7 +18,7 @@ module.exports = {
     await interaction.deferReply();
     const charName = interaction.options.getString('character').toLowerCase();
     let serverName = interaction.options.getString('realm').toLowerCase();
-    if (serverName.includes(' ') || serverName.includes('-')) {
+    if(serverName.includes(' ') || serverName.includes('-')) {
       serverName = serverName.replace(/-| /g, '');
     }
     const region = interaction.options.getString('region').toLowerCase();
@@ -29,9 +29,9 @@ module.exports = {
       );
       const user = await res.json();
 
-      if (user.message) {
-        if (user.message.includes('realm')) return interaction.editReply(`${nameServer} is not a valid realm`);
-        if (user.message.includes('character')) return interaction.editReply(`${name} is not a valid character`);
+      if(user.message) {
+        if(user.message.includes('realm')) return interaction.editReply(`${nameServer} is not a valid realm`);
+        if(user.message.includes('character')) return interaction.editReply(`${name} is not a valid character`);
       }
 
       const mPlusEmbed = new EmbedBuilder()

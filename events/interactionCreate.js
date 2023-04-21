@@ -5,25 +5,25 @@ const queue = require('../commands/queue');
 module.exports = {
   name: 'interactionCreate',
   async execute(interaction) {
-    if (interaction.isButton()) {
-      if (!queue.setFields) return;
-      if (typeof listNumber === 'undefined') listNumber = 0;
+    if(interaction.isButton()) {
+      if(!queue.setFields) return;
+      if(typeof listNumber === 'undefined') listNumber = 0;
 
-      switch (interaction.customId) {
-        case 'first':
+      switch(interaction.customId) {
+        case'first':
           listNumber = 0;
           queue.setFields(0);
           break;
-        case 'prev':
-          if (listNumber === 0) break;
+        case'prev':
+          if(listNumber === 0) break;
           listNumber -= 1;
           queue.setFields(listNumber);
           break;
-        case 'next':
+        case'next':
           listNumber += 1;
           queue.setFields(listNumber);
           break;
-        case 'last':
+        case'last':
           // TODO: make "listNumber" remember which listnumber this is at.
           queue.setFields('last');
           break;
@@ -32,16 +32,16 @@ module.exports = {
       console.log(chalk.cyan(interaction.user.tag), `triggered a button in #${interaction.channel.name}`);
       return;
     }
-    if (!interaction.isChatInputCommand()) return;
+    if(!interaction.isChatInputCommand()) return;
     const command = interaction.client.commands.get(interaction.commandName);
-    if (!command) return;
-    try {
+    if(!command) return;
+    try{
       await command.execute(interaction);
-    } catch (error) {
+    } catch(error) {
       console.error(error);
-      try {
+      try{
         await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-      } catch {
+      } catch{
         console.error(error);
         await interaction.channel.send({ content: 'There was an error while executing this command!', ephemeral: true });
       }

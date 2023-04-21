@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { setTimeout } = require('timers/promises');
+const{ SlashCommandBuilder } = require('discord.js');
+const{ setTimeout } = require('timers/promises');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -9,10 +9,10 @@ module.exports = {
       .setDescription('The song you want to play')
       .setRequired(true)),
   async execute(interaction) {
-    const { player } = require('../index');
+    const{ player } = require('../index');
 
-    if (!interaction.member.voice.channelId) return interaction.reply({ content: 'You are not in a voice channel!', ephemeral: true });
-    if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) return interaction.reply({ content: 'You are not in my voice channel!', ephemeral: true });
+    if(!interaction.member.voice.channelId) return interaction.reply({ content: 'You are not in a voice channel!', ephemeral: true });
+    if(interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) return interaction.reply({ content: 'You are not in my voice channel!', ephemeral: true });
     const query = interaction.options.getString('song');
     const queue = player.createQueue(interaction.guild, {
       metadata: {
@@ -20,9 +20,9 @@ module.exports = {
       },
     });
 
-    try {
-      if (!queue.connection) await queue.connect(interaction.member.voice.channel);
-    } catch {
+    try{
+      if(!queue.connection) await queue.connect(interaction.member.voice.channel);
+    } catch{
       queue.destroy();
       return interaction.reply({ content: 'Could not join your voice channel!', ephemeral: true });
     }
@@ -32,8 +32,14 @@ module.exports = {
       requestedBy: interaction.user,
     });
     let loadingMsg;
-    if (!searchResult) return interaction.followUp({ content: 'No results were found!' }); // eslint-disable-next-line prefer-const
+    if(!searchResult) return interaction.followUp({ content: 'No results were found!' }); // eslint-disable-next-line prefer-const
     loadingMsg = await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
+    player.on('trackStart', () => {
+      if(loadingMsg) {
+        loadingMsg.delete();
+        loadingMsg = false;
+      }
+    });
     // TODO: delete "loadingMsg" if it has added the track it's "loading...".
     // TODO: Temporarily it is just deleting itself after 100ms which is just stupid.
     setTimeout(100).then(() => loadingMsg.delete()); // TODO: This is what should fixed changed.
@@ -41,7 +47,7 @@ module.exports = {
 
     // eslint-disable-next-line max-len, no-unused-expressions
     searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);
-    if (!queue.playing) await queue.play();
+    if(!queue.playing) await queue.play();
     return null;
   },
 };

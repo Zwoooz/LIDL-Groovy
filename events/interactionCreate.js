@@ -5,6 +5,7 @@ const queue = require('../commands/queue');
 module.exports = {
   name: 'interactionCreate',
   async execute(interaction) {
+    console.log(interaction);
     if(interaction.customId) {
       if(!queue.setFields) return;
       if(typeof listNumber === 'undefined') listNumber = 0;

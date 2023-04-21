@@ -73,7 +73,7 @@ player.on('trackStart', async (queue, track) => {
       console.log(error)
     }
   } 
-  await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
+  playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
 })
 
 player.on('trackAdd', (queue, track) => queue.metadata.channel.send({ content: `🎶 | Track **${track.title}** has been added to the queue!` }).then((msg) => setTimeout(3000).then(() => msg.delete())));

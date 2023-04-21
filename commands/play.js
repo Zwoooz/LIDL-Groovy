@@ -44,6 +44,7 @@ module.exports = {
     });
     player.on('tracksAdd', (tracks) => {
       console.log('inside playlistAdd');
+      console.log(tracks);
       if(loadingMsg) {
         loadingMsg.edit(`🎶 | Playlist **${tracks.title}** with ${tracks.items.length} songs has been added to the queue!`).then((msg) => setTimeout(3000).then(() => {
           msg.delete();

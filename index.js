@@ -68,7 +68,7 @@ player.on('trackStart', async (queue, track) => {
     
 
   //TODO: This crashes bot if it has left the voice call, it works with a long queue of songs, but crashes if it tries this after it leaves.
-  /*if(playMsg) {
+  if(playMsg) {
     try{
       playMsg.delete();
     } catch (error){
@@ -77,13 +77,19 @@ player.on('trackStart', async (queue, track) => {
     playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
   } else {
     playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
-  } */
+  }
 
   await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
 })
+
 player.on('trackAdd', (queue, track) => queue.metadata.channel.send({ content: `🎶 | Track **${track.title}** has been added to the queue!` }).then((msg) => setTimeout(3000).then(() => msg.delete())));
 player.on('playlistAdd', (queue, playlist) => queue.metadata.channel.send({ content: `🎶 | Playlist **${playlist.title}** with ${playlist.items.length} songs has been added to the queue!` }).then((msg) => setTimeout(3000).then(() => msg.delete())));
-//player.on('queueEnd', () => playMsg? playMsg.delete() : null);
+player.on('queueEnd', () => {
+  if(playMsg) {
+    playMsg.delete();
+    playMsg = false;
+  }
+})
 
 player.on('connectionCreate', (queue) => {
   queue.connection.voiceConnection.on('stateChange', (oldState, newState) => {

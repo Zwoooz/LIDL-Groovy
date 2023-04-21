@@ -36,16 +36,15 @@ module.exports = {
     loadingMsg = await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
     player.on('trackAdd', (track) => {
       if(loadingMsg) {
-        loadingMsg.edit(`🎶 | Track **${track.title}** has been added to the queue!`).then((msg) => setTimeout(3000).then(() => {
+        loadingMsg.edit(`🎶 | Track **${searchResult.tracks[0].title}** has been added to the queue!`).then((msg) => setTimeout(5000).then(() => {
           msg.delete();
           loadingMsg = false;
         }));
       }
     });
     player.on('tracksAdd', (tracks) => {
-      console.log(tracks);
       if(loadingMsg) {
-        loadingMsg.edit(`🎶 | Playlist **${searchResult.playlist.title}** with ${tracks.tracks.length} songs has been added to the queue!`).then((msg) => setTimeout(3000).then(() => {
+        loadingMsg.edit(`🎶 | Playlist **${searchResult.playlist.title}** with ${tracks.tracks.length} songs has been added to the queue!`).then((msg) => setTimeout(5000).then(() => {
           msg.delete();
           loadingMsg = false;
         }));

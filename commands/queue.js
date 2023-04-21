@@ -47,7 +47,7 @@ module.exports = {
       .setThumbnail(track.thumbnail)
       .setFields(
         { name: '\u200b', value: queue.toString().split('\n11')[0] },
-        { name: '\u200b', value: `And ${queue.toString().split('\n')[1].length - 11} other items` },
+        { name: '\u200b', value: `And ${queue.tracks.length - 11} other items` },
       );
 
     // TODO: Crashes the bot when buttons are used

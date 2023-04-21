@@ -76,8 +76,6 @@ player.on('trackStart', async (queue, track) => {
   playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
 })
 
-player.on('trackAdd', (queue, track) => queue.metadata.channel.send({ content: `🎶 | Track **${track.title}** has been added to the queue!` }).then((msg) => setTimeout(3000).then(() => msg.delete())));
-player.on('playlistAdd', (queue, playlist) => queue.metadata.channel.send({ content: `🎶 | Playlist **${playlist.title}** with ${playlist.items.length} songs has been added to the queue!` }).then((msg) => setTimeout(3000).then(() => msg.delete())));
 player.on('queueEnd', () => {
   if(playMsg) {
     playMsg.delete();

@@ -1,4 +1,5 @@
 const{ SlashCommandBuilder } = require('discord.js');
+const{ setTimeout } = require('timers/promises');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -33,10 +34,20 @@ module.exports = {
     let loadingMsg;
     if(!searchResult) return interaction.followUp({ content: 'No results were found!' }); // eslint-disable-next-line prefer-const
     loadingMsg = await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
-    player.on('trackAdd', () => {
+    player.on('trackAdd', (track) => {
       if(loadingMsg) {
-        loadingMsg.edit('edited!');
-        loadingMsg = false;
+        loadingMsg.edit(`🎶 | Track **${track.title}** has been added to the queue!`).then((msg) => setTimeout(3000).then(() => {
+          msg.delete();
+          loadingMsg = false;
+        }));
+      }
+    });
+    player.on('playlistAdd', (playlist) => {
+      if(loadingMsg) {
+        loadingMsg.edit(`🎶 | Playlist **${playlist.title}** with ${playlist.items.length} songs has been added to the queue!`).then((msg) => setTimeout(3000).then(() => {
+          msg.delete();
+          loadingMsg = false;
+        }));
       }
     });
 

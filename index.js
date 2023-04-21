@@ -72,15 +72,7 @@ player.on('trackStart', async (queue, track) => {
     } catch (error){
       console.log(error)
     }
-
-    console.log('Playmessage is true?', playMsg)
-
-    playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
-  } else {
-    console.log('playMsg is false?', playMsg);
-    playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
-  }
-
+  } 
   await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
 })
 

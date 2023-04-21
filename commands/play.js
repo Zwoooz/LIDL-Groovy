@@ -33,7 +33,7 @@ module.exports = {
     let loadingMsg;
     if(!searchResult) return interaction.followUp({ content: 'No results were found!' }); // eslint-disable-next-line prefer-const
     loadingMsg = await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
-    player.on('tracksAdd', () => {
+    player.on('trackAdd', () => {
       if(loadingMsg) {
         loadingMsg.delete();
         loadingMsg = false;

@@ -8,6 +8,6 @@ module.exports = {
   async execute(interaction) {
     const{ player } = require('../index');
     player.deleteQueue(interaction.guild);
-    interaction.reply('Queue has been deleted!').then((msg) => setTimeout(5000).then(() => msg.delete()));
+    interaction.reply('Queue has been deleted!').then((msg) => setTimeout(5000).then(() => msg.deleteReply()));
   },
 };

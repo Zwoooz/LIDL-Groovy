@@ -68,7 +68,7 @@ module.exports = {
 
       interaction.editReply({ embeds: [queueEmbed], components: [row] });
     };
-    return interaction.editReply({ embeds: [queueEmbed], components: [row] });
     */
+    return interaction.editReply({ embeds: [queueEmbed] });
   },
 };

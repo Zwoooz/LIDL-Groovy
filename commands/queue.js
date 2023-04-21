@@ -38,20 +38,19 @@ module.exports = {
       );
 
     const queueArr = queue.toString().split('\n');
-    let queueString = [];
+    const queueString = [];
 
-    let queueEmbed = new EmbedBuilder()
+    const queueEmbed = new EmbedBuilder()
       .setColor('Gold')
       .setTitle('Now playing:')
       .setDescription(`[**${track.toString()}**](${track.url})`)
       .setThumbnail(track.thumbnail)
       .setFields(
-        { name: '\u200b', value: queue.toString().split('\n11')[0] }
-        { name: '\u200b', value: `And ${queue.toString().length-11} other items` }
-        );
+        { name: '\u200b', value: queue.toString().split('\n11')[0] },
+        { name: '\u200b', value: `And ${queue.toString().length - 11} other items` },
+      );
 
-
-      //TODO: Crashes the bot when buttons are used
+    // TODO: Crashes the bot when buttons are used
     /* module.exports.setFields = (listNumber) => {
       queueString = [];
       let multiplier = listNumber;
@@ -70,5 +69,6 @@ module.exports = {
       interaction.editReply({ embeds: [queueEmbed], components: [row] });
     };
     return interaction.editReply({ embeds: [queueEmbed], components: [row] });
-  }, */
+    */
+  },
 };

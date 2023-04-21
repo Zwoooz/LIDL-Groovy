@@ -66,17 +66,19 @@ player.on('trackStart', async (queue, track) => {
       .setDescription(`[**${track.toString()}**](${track.url})`)
       .setThumbnail(track.thumbnail);
     
-
-  //TODO: This crashes bot if it has left the voice call, it works with a long queue of songs, but crashes if it tries this after it leaves.
   if(playMsg) {
     try{
       playMsg.delete();
     } catch (error){
       console.log(error)
     }
+
+    console.log('Playmessage is true?', playMsg)
+
     playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
   } else {
     playMsg = await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
+    console.log('playMsg is false?', playMsg);
   }
 
   await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })

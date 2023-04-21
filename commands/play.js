@@ -42,9 +42,10 @@ module.exports = {
         }));
       }
     });
-    player.on('playlistAdd', (playlist) => {
+    player.on('tracksAdd', (tracks) => {
+      console.log('inside playlistAdd');
       if(loadingMsg) {
-        loadingMsg.edit(`🎶 | Playlist **${playlist.title}** with ${playlist.items.length} songs has been added to the queue!`).then((msg) => setTimeout(3000).then(() => {
+        loadingMsg.edit(`🎶 | Playlist **${tracks.title}** with ${tracks.items.length} songs has been added to the queue!`).then((msg) => setTimeout(3000).then(() => {
           msg.delete();
           loadingMsg = false;
         }));

@@ -18,6 +18,10 @@ module.exports = {
       metadata: {
         channel: interaction.channel,
       },
+      leaveOnEmpty: true,
+      leaveOnEmptyCooldown: 300000,
+      leaveOnEnd: true,
+      leaveOnEndCooldown: 300000,
     });
 
     try{
@@ -36,7 +40,7 @@ module.exports = {
     loadingMsg = await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...` });
     player.on('trackAdd', () => {
       if(loadingMsg) {
-        loadingMsg.edit(`🎶 | Track **${searchResult.tracks[0].title}** has been added to the queue!`).then((msg) => setTimeout(5000).then(() => {
+        loadingMsg.edit(`🎶 | Track **${searchResult.tracks[0].title}** has been added to the queue!`).then((msg) => setTimeout(2000).then(() => {
           msg.delete();
           loadingMsg = false;
         }));
@@ -44,7 +48,7 @@ module.exports = {
     });
     player.on('tracksAdd', (tracks) => {
       if(loadingMsg) {
-        loadingMsg.edit(`🎶 | Playlist **${searchResult.playlist.title}** with ${tracks.tracks.length} songs has been added to the queue!`).then((msg) => setTimeout(5000).then(() => {
+        loadingMsg.edit(`🎶 | Playlist **${searchResult.playlist.title}** with ${tracks.tracks.length} songs has been added to the queue!`).then((msg) => setTimeout(2000).then(() => {
           msg.delete();
           loadingMsg = false;
         }));

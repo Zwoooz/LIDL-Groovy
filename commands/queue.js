@@ -47,8 +47,13 @@ module.exports = {
       .setThumbnail(track.thumbnail)
       .setFields(
         { name: '\u200b', value: queue.toString().split('\n11')[0] },
+      );
+
+    if(queue.tracks.length > 10) {
+      queueEmbed.addFields(
         { name: '\u200b', value: `And ${queue.tracks.length - 10} other items` },
       );
+    }
 
     // TODO: Crashes the bot when buttons are used
     /* module.exports.setFields = (listNumber) => {

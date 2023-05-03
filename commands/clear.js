@@ -9,6 +9,6 @@ module.exports = {
     await interaction.deferReply();
     const{ player } = require('../index');
     player.deleteQueue(interaction.guild);
-    interaction.followUp('Queue has been deleted!').then((msg) => setTimeout(5000).then(() => msg.delete()));
+    interaction.followUp('Queue has been deleted!').then((msg) => setTimeout(3000).then(() => msg.delete()));
   },
 };

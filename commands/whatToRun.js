@@ -53,7 +53,16 @@ module.exports = {
       return remainingDungeons;
     }
 
-    const currentDungeons = ['Shadowmoon Burial Grounds', 'Temple of the Jade Serpent', 'Court of Stars', 'Algeth\'ar Academy', 'The Azure Vault', 'Halls of Valor', 'Ruby Life Pools', 'The Nokhud Offensive'];
+    const currentDungeons = [];
+
+    const staticData = await fetch(
+      'https://raider.io/api/v1/mythic-plus/static-data?expansion_id=9',
+    );
+    const staticDataJSON = await staticData.json();
+
+    staticDataJSON.seasons[0].dungeons.forEach((element) => {
+      currentDungeons.push(element.name);
+    });
 
     const whatToRun = async (name) => {
       const resAlt = await fetch(
@@ -185,7 +194,7 @@ module.exports = {
           value: `${score.dungeon} ${score.level}`,
         });
       });
-      embed.setFooter({ text: 'Updated for dungeons S1 Dragonflight' });
+      embed.setFooter({ text: 'Updated for Dragonflight' });
 
       return interaction.editReply({ embeds: [embed] });
     });

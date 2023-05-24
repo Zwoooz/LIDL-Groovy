@@ -55,6 +55,16 @@ module.exports = {
     // chatgpt probably shit solution cause I was lazy and short on time
 
     const mPlus = async (name, nameServer, nameRegion) => {
+      try{
+        const tester = await fetch(
+          `https://raider.io/api/v1/characters/profile?region=${nameRegion}&realm=${nameServer}&name=${name}`,
+        );
+        // eslint-disable-next-line no-unused-vars
+        const testerJSON = await tester.json();
+      } catch(error) {
+        console.error(error);
+        return interaction.editReply('Raider.IO cannot be reached currenty.');
+      }
       const res = await fetch(
         `https://raider.io/api/v1/characters/profile?region=${nameRegion}&realm=${nameServer}&name=${name}&fields=mythic_plus_scores`,
       );
@@ -79,8 +89,8 @@ module.exports = {
       const fort = [];
       // eslint-disable-next-line max-len
       userDungeonsBestJSON.mythic_plus_best_runs.concat(userDungeonsAlternateJSON.mythic_plus_alternate_runs).forEach((element) => {
-        if(element.affixes[0].name === 'Tyrannical') tyr.push(`${element.short_name} +${element.mythic_level}${element.num_keystone_upgrades === 0 ? ' (OT)' : ''}`);
-        else fort.push(`${element.short_name} +${element.mythic_level}${element.num_keystone_upgrades === 0 ? ' (OT)' : ''}`);
+        if(element.affixes[0].name === 'Tyrannical') tyr.push(`${element.short_name} +${element.mythic_level}${element.num_keystone_upgrades === 0 ? ' (OT)' : ` (+${element.num_keystone_upgrades})`}`);
+        else fort.push(`${element.short_name} +${element.mythic_level}${element.num_keystone_upgrades === 0 ? ' (OT)' : ` (+${element.num_keystone_upgrades})`}`);
       });
       tyr.sort();
       fort.sort();

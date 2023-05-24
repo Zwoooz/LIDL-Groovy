@@ -39,12 +39,7 @@ module.exports = {
       await command.execute(interaction);
     } catch(error) {
       console.error(error);
-      try{
-        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-      } catch{
-        console.error(error);
-        await interaction.channel.send({ content: 'There was an error while executing this command!', ephemeral: true });
-      }
+      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
     }
     console.log(chalk.cyan(interaction.user.tag), 'triggered the command', chalk.yellow(interaction.commandName), `in #${interaction.channel.name}`);
   },

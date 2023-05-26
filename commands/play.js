@@ -55,8 +55,14 @@ module.exports = {
       }
     });
 
-    // eslint-disable-next-line max-len, no-unused-expressions
-    searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);
+    try{
+      // eslint-disable-next-line max-len, no-unused-expressions
+      searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);
+    } catch(error) {
+      console.log(error);
+      loadingMsg = false;
+      return interaction.editReply('Track is invalid, (music.youtube links do not work, use normal youtube links)');
+    }
     if(!queue.playing) await queue.play();
     return null;
   },

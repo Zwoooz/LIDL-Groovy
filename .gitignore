@@ -139,3 +139,6 @@ main.css
 
 # macOS garbage
 .DS_Store
+
+#package-lock
+package-lock.json
